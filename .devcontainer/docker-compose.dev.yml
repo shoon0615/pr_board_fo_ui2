@@ -1,0 +1,12 @@
+services:
+  workspace:
+    container_name: pr_board_FO_UI_devcon_workspace
+    image: mcr.microsoft.com/devcontainers/base:bullseye
+
+    environment:
+      TZ: 'Asia/Seoul'
+
+    volumes:
+      # Workspace Cache
+      - ..:${containerWorkspaceFolder}:cached
+    command: sleep infinity

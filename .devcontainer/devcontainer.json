@@ -1,0 +1,24 @@
+{
+    // Basic
+    "name": "Pr_board_FO_UI Dev Container",
+    "dockerComposeFile": "docker-compose.dev.yml",
+    "service": "workspace",
+    "workspaceFolder": "/home/vscode/${localWorkspaceFolderBasename}",
+    // Featuring
+    "features": {
+      "ghcr.io/devcontainers/features/docker-in-docker:2":{},
+      // "ghcr.io/devcontainers/features/node:1": {}
+      "ghcr.io/devcontainers-extra/features/projen:1": {}
+    },
+    // Custom
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "github.vscode-github-actions"
+        ]
+      }
+    },
+  
+    // LifeCycles
+    "initializeCommand": "bash ./.devcontainer/commands/initializeCommand.sh ${localWorkspaceFolder} ${containerWorkspaceFolder} ${localWorkspaceFolderBasename} ${containerWorkspaceFolderBasename}"
+  }
