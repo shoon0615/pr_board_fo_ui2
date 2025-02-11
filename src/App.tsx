@@ -15,7 +15,9 @@ import BackToTop from './layout/Header/components/ScrollTop';
 import Footer from './layout/Footer/Footer';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import { dataGridCustomizations } from './components/shared-theme/customizations/datagrid';
 
+const xThemeComponents = { ...dataGridCustomizations };
 
 /**
  * Dashboard 컴포넌트와 동일
@@ -32,9 +34,7 @@ function App(props: { disableCustomTheme?: boolean }) {
 
     return (
         // <Dashboard />
-
-        // <AppTheme {...props} themeComponents={xThemeComponents}>
-        <AppTheme {...props}>
+        <AppTheme {...props} themeComponents={xThemeComponents}>
             <CssBaseline enableColorScheme />
             <Box sx={{ display: 'flex' }}>
                 {/* Side content */}

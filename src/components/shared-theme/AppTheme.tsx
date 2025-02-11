@@ -8,6 +8,7 @@ import { navigationCustomizations } from './customizations/navigation';
 import { surfacesCustomizations } from './customizations/surfaces';
 import { colorSchemes, typography, shadows, shape } from './themePrimitives';
 
+// interface AppThemeProps extends React.PropsWithChildren {
 interface AppThemeProps {
   children: React.ReactNode;
   /**

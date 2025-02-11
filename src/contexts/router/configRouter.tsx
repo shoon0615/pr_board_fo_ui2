@@ -14,6 +14,8 @@ const MainGrid = lazy(() => import('../../components/dashboard/components/MainGr
 
 const SignIn = lazy(() => import('./SignIn'));
 
+const BoardGrid = lazy(() => import('../../components/dashboard/custom/MainGrid'));
+
 const router = createBrowserRouter([
     {
         // path: '/',
@@ -35,13 +37,30 @@ const router = createBrowserRouter([
                         element: <MainGrid />,
                     },
                     {
-                        path: '/signIn',
+                        // path: '/signIn',
+                        path: 'signIn',
                         element: <SignIn />,
                     },
                     {
-                        path: '/test',
+                        path: 'test',
                         element: <div>test</div>,
                         loader: requiresAuth,
+                    },
+                    {
+                        /** 게시판 */
+                        path: 'board',
+                        element: <Outlet />,
+                        children: [
+                            {
+                                index: true,
+                                element: <div>board</div>,
+                            },
+                            {
+                                // path: '/:bdId',
+                                path: ':bdId',
+                                element: <BoardGrid />,
+                            }
+                        ]
                     },
                     {
                         path: '*',
