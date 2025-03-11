@@ -31,7 +31,9 @@ const secondaryListItems = [
 
 const menuListItems = [
     { to: '/', label: 'Main' },
-    { to: '/signIn', label: 'Board' },
+    { to: '/test', label: 'Test' },
+    { to: '/board/blog', label: 'Board' },
+    { to: '/notFound', label: 'NotFound' },
 ];
 
 export default function MenuContent() {

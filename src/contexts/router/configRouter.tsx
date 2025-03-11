@@ -12,9 +12,13 @@ import { requiresAuth } from './requiresAuth'
 const App = lazy(() => import('../../App'));
 const MainGrid = lazy(() => import('../../components/dashboard/components/MainGrid'));
 
-const SignIn = lazy(() => import('./SignIn'));
+// const Test = lazy(() => import('../../components/custom/marketing-page/MarketingPage'));
+const Test = lazy(() => import('../../components/custom/create/Checkout'));
+const Test2 = lazy(() => import('../../components/custom/detail/Checkout'));
 
-const BoardGrid = lazy(() => import('../../components/dashboard/custom/MainGrid'));
+const BoardGrid = lazy(() => import('../../components/custom/MainGrid'));
+const Blog = lazy(() => import('../../components/custom/blog/Blog'));
+const SignIn = lazy(() => import('../../components/custom/sign-in/SignIn'));
 
 const router = createBrowserRouter([
     {
@@ -37,11 +41,6 @@ const router = createBrowserRouter([
                         element: <MainGrid />,
                     },
                     {
-                        // path: '/signIn',
-                        path: 'signIn',
-                        element: <SignIn />,
-                    },
-                    {
                         path: 'test',
                         element: <div>test</div>,
                         loader: requiresAuth,
@@ -59,7 +58,35 @@ const router = createBrowserRouter([
                                 // path: '/:bdId',
                                 path: ':bdId',
                                 element: <BoardGrid />,
-                            }
+                            },
+                            {
+                                path: 'blog',
+                                element: <Blog />,
+                            },
+                            {
+                                path: 'blog/:bdId',
+                                element: <BoardGrid />,
+                            },
+                            {
+                                path: 'signIn',
+                                element: <SignIn />,
+                            },
+                            {
+                                path: 'test',
+                                element: <Test />,
+                            },
+                            {
+                                path: 'test/:bdId',
+                                element: <Test />,
+                            },
+                            {
+                                path: 'test2',
+                                element: <Test2 />,
+                            },
+                            {
+                                path: 'test2/:bdId',
+                                element: <Test2 />,
+                            },
                         ]
                     },
                     {
