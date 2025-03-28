@@ -109,7 +109,8 @@ export default function DataContent() {
 
     const [page, setPage] = useState(1);
 
-    const foApiUrl = 'http://localhost:3001/api/v1/crud';
+    // const foApiUrl = 'http://localhost:3001/api/v1/crud';
+    const foApiUrl = 'http://158.179.167.148:3001/api/v1/crud';
     const { data, isLoading } = useQuery<Boards>({
         queryKey: ['boards'],
         queryFn: async () => (await axios.get<{ data: Boards }>(foApiUrl)).data.data,   // 렌더링 발생
