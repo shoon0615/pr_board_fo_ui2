@@ -131,7 +131,7 @@ export default function DataContent() {
                         }}
                     >
                         {data?.map((board, index) => (
-                            <Link to={`/board/test2/${index + 1}`} key={index}>
+                            <Link to={`/board/detail/${index + 1}`} key={index}>
                                 <StyledCard
                                     // key={board.id}
                                     key={index}

@@ -7,9 +7,6 @@ import FolderIcon from '@mui/icons-material/Folder';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
-import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
-import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
@@ -17,23 +14,15 @@ import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import { Link, NavLink } from 'react-router-dom';
 
 const mainListItems = [
-    { text: 'Home', icon: <HomeRoundedIcon /> },
-    { text: 'Analytics', icon: <AnalyticsRoundedIcon /> },
-    { text: 'Clients', icon: <PeopleRoundedIcon /> },
-    { text: 'Tasks', icon: <AssignmentRoundedIcon /> },
+    { to: '/', label: 'Main' },
+    { to: '/board/list', label: 'Board' },
+    { to: '/notFound', label: 'NotFound' },
 ];
 
 const secondaryListItems = [
     { text: 'Settings', icon: <SettingsRoundedIcon /> },
     { text: 'About', icon: <InfoRoundedIcon /> },
     { text: 'Feedback', icon: <HelpRoundedIcon /> },
-];
-
-const menuListItems = [
-    { to: '/', label: 'Main' },
-    { to: '/test', label: 'Test' },
-    { to: '/board/blog', label: 'Board' },
-    { to: '/notFound', label: 'NotFound' },
 ];
 
 export default function MenuContent() {
@@ -46,24 +35,11 @@ export default function MenuContent() {
                         disablePadding
                         sx={{ display: 'block' }}
                     >
-                        <ListItemButton selected={index === 0}>
-                            <ListItemIcon>{item.icon}</ListItemIcon>
-                            <ListItemText primary={item.text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-                <hr />
-                {menuListItems.map((item, index) => (
-                    <ListItem
-                        key={index}
-                        disablePadding
-                        sx={{ display: 'block' }}
-                    >
                         <NavLink key={item.to} to={item.to} caseSensitive end>
                             {({ isActive }) => (
                                 <ListItemButton selected={isActive}>
                                     <ListItemIcon>
-                                        <FolderIcon />
+                                        {index === 0 ? <HomeRoundedIcon /> : <FolderIcon />}
                                     </ListItemIcon>
                                     <ListItemText primary={item.label} />
                                 </ListItemButton>

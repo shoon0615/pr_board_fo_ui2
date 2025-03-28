@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
 import './index.css';
 
 // redux
@@ -23,8 +22,6 @@ import { ModalProvider } from 'react-modal-hook';
 
 // styled-components
 import GlobalStyle from './styles/GlobalStyle'
-
-// 테스트
 
 const queryClient = new QueryClient({
     defaultOptions: {

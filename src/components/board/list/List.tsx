@@ -4,7 +4,7 @@ import Container from '@mui/material/Container';
 import MainContent from './components/MainContent';
 import AppTheme from '../../shared-theme/AppTheme';
 
-export default function Blog(props: { disableCustomTheme?: boolean }) {
+export default function List(props: { disableCustomTheme?: boolean }) {
     return (
         <AppTheme {...props}>
             <CssBaseline enableColorScheme />

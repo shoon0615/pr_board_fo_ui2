@@ -33,14 +33,6 @@ export function Search() {
 export default function HeaderContent() {
     return (
         <>
-            {/* <div>
-                <Typography variant='h1' gutterBottom>
-                    Blog
-                </Typography>
-                <Typography>
-                    Stay in the loop with the latest about our products
-                </Typography>
-            </div> */}
             <div>
                 <Typography variant='h2'>게시판</Typography>
             </div>

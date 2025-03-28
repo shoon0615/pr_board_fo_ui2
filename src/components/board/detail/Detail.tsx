@@ -140,7 +140,7 @@ export default function Checkout(props: { disableCustomTheme?: boolean }) {
                             justifyContent: 'flex-end',
                         }}
                     >
-                        <Link to={`/board/test/${bdId}`}>
+                        <Link to={`/board/create/${bdId}`}>
                         <Button
                             variant='contained'
                             endIcon={<ChevronRightRoundedIcon />}

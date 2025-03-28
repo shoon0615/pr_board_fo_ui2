@@ -316,7 +316,7 @@ export default function Checkout(props: { disableCustomTheme?: boolean }) {
                                     variant='body2'
                                     sx={{ alignSelf: 'center' }}
                                 >Modal</MuiLink> */}
-                                <Link to={`/board/blog`}>
+                                <Link to={`/board/list`}>
                                 <Button
                                     variant='contained'
                                     sx={{
