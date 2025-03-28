@@ -24,6 +24,8 @@ import { ModalProvider } from 'react-modal-hook';
 // styled-components
 import GlobalStyle from './styles/GlobalStyle'
 
+// 테스트
+
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
