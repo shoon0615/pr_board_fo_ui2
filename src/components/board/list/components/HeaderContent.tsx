@@ -36,7 +36,7 @@ export default function HeaderContent() {
             <div>
                 <Typography variant='h2'>게시판</Typography>
             </div>
-            <Box
+            {/* <Box
                 sx={{
                     display: { xs: 'flex', sm: 'none' },
                     flexDirection: 'row',
@@ -49,7 +49,9 @@ export default function HeaderContent() {
                 <IconButton size='small' aria-label='RSS feed'>
                     <RssFeedRounded />
                 </IconButton>
-            </Box>
+            </Box> */}
+
+            {/* 게시판 헤더 */}
             <Box
                 sx={{
                     display: 'flex',

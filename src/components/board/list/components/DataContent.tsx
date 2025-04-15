@@ -4,10 +4,9 @@ import { Avatar, AvatarGroup, Box, Card, CardContent, Typography, Pagination, Ch
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid2';
 import TagIcon from '@mui/icons-material/Tag';
-
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
 import { Link, NavLink } from 'react-router-dom';
+import { useBoardData } from '../../../../hooks/board/useBoard';
+import { author } from '../../../../types/Board';
 
 const StyledCard = styled(Card)(({ theme }) => ({
     display: 'flex',
@@ -46,7 +45,8 @@ const StyledTypography = styled(Typography)({
     textOverflow: 'ellipsis',
 });
 
-function Author({ author }: { author: string; }) {
+function Author({ author }: { author: author; }) {
+
     return (
         <Box
             sx={{
@@ -67,23 +67,16 @@ function Author({ author }: { author: string; }) {
                 }}
             >
                 <AvatarGroup>
-                    <Avatar alt={author}
+                    <Avatar alt={author.author}
                         sx={{ width: 24, height: 24 }}
                     />
                 </AvatarGroup>
-                <Typography variant='caption'>{author}</Typography>
+                <Typography variant='caption'>{author.author}</Typography>
             </Box>
-            <Typography variant='caption'>2025.03.03</Typography>
+            <Typography variant='caption'>{author.createDate}</Typography>
         </Box>
     );
 }
-
-export type Boards = Board[];
-export interface Board {
-    id?: string;
-    title: string;
-    contents: string;
-};
 
 export default function DataContent() {
     const [focusedCardIndex, setFocusedCardIndex] = useState<
@@ -109,15 +102,8 @@ export default function DataContent() {
 
     const [page, setPage] = useState(1);
 
-    // const foApiUrl = 'http://localhost:3001/api/v1/crud';
-    const foApiUrl = 'http://158.179.167.148:3001/api/v1/crud';
-    const { data, isLoading } = useQuery<Boards>({
-        queryKey: ['boards'],
-        queryFn: async () => (await axios.get<{ data: Boards }>(foApiUrl)).data.data,   // 렌더링 발생
-        // select: (data: any) => data.map((data: any) => ({ ...data, id: data.crud_id }))
-        // select: (data: any) => data.filter((data: any) => data.crud_id === 8)
-    });
-
+    //데이터 호출
+    const { data, isLoading } = useBoardData();
     return (
         <>
             <Grid container spacing={2} columns={12}>
@@ -178,7 +164,7 @@ export default function DataContent() {
                                             </StyledTypography>
                                         </div>
                                     </StyledCardContent>
-                                    <Author author={board.title} />
+                                    {/* <Author author={board.title} /> */}
                                 </StyledCard>
                             </Link>
                         ))}
