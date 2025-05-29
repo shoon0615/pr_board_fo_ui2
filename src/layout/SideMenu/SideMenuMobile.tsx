@@ -1,15 +1,12 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
+import { 
+    Avatar, Button, Divider, Stack, Typography, 
+} from '@mui/material';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
+import { NotificationsRounded as NotificationsRoundedIcon, LogoutRounded as LogoutRoundedIcon } from '@mui/icons-material';
 
-import MenuButton from '../Header/components/MenuButton';
-import MenuContent from './components/MenuContent';
+import MenuButton from '@/layout/Header/components/MenuButton';
+import MenuContent from '@/layout/SideMenu/components/MenuContent';
 
 interface SideMenuMobileProps {
   open: boolean | undefined;

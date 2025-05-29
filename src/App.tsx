@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import AppTheme from './components/shared-theme/AppTheme';
+import { useState } from 'react';
+import AppTheme from '@/shared/shared-theme/AppTheme';
 // import { CssBaseline, Box, Stack, ... } from "@material-ui/core";
 import CssBaseline from '@mui/material/CssBaseline';
 import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Toolbar from '@mui/material/Toolbar';
+import { 
+    Box, Stack, Toolbar,
+} from '@mui/material';
 
-import SideMenu from './layout/SideMenu/SideMenu';
-import AppNavbar from './components/dashboard/components/AppNavbar';
-import Header from './layout/Header/Header';
-import { useLocation, useOutlet, Outlet, ScrollRestoration } from 'react-router-dom';
-import BackToTop from './layout/Header/components/ScrollTop';
-import Footer from './layout/Footer/Footer';
+import SideMenu from '@/layout/SideMenu/SideMenu';
+import AppNavbar from '@/pages/dashboard/components/AppNavbar';
+import Header from '@/layout/Header';
+import BackToTop from '@/layout/Header/components/ScrollTop';
+import Footer from '@/layout/Footer';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { dataGridCustomizations } from './components/shared-theme/customizations/datagrid';
+import { useLocation, useOutlet, Outlet, ScrollRestoration, } from 'react-router-dom';
+import { AnimatePresence, motion, } from 'framer-motion';
+import { dataGridCustomizations } from './shared/shared-theme/customizations/datagrid';
 
 const xThemeComponents = { ...dataGridCustomizations };
 

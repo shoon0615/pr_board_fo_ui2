@@ -3,14 +3,15 @@ import { createBrowserRouter, Outlet } from 'react-router-dom';
 // import { ErrorBoundary } from 'react-error-boundary';
 
 // (성능 개선??)
-// const App = lazy(() => import(/* webpackChunkName:'main' */ '../../App'));
-const App = lazy(() => import('../../App'));
-const MainGrid = lazy(() => import('../../components/dashboard/components/MainGrid'));
+// const App = lazy(() => import(/* webpackChunkName:'main' */ '@/App'));
+const App = lazy(() => import('@/App'));
+const MainGrid = lazy(() => import('@/pages/dashboard/components/MainGrid'));
 
-const List = lazy(() => import('../../components/board/list/List'));
-const SignIn = lazy(() => import('../../components/board/sign-in/SignIn'));
-const Create = lazy(() => import('../../components/board/create/Create'));
-const Detail = lazy(() => import('../../components/board/detail/Detail'));
+// const List = lazy(() => import('@/pages/board'));
+const List = lazy(() => import('@/app/board/list'));
+const Create = lazy(() => import('@/app/board/create'));
+const Detail = lazy(() => import('@/app/board/detail'));
+const SignIn = lazy(() => import('@/app/member/sign-in'));
 
 const router = createBrowserRouter([
     {
@@ -40,16 +41,16 @@ const router = createBrowserRouter([
                                 element: <List />,
                             },
                             {
-                                path: 'signIn',
-                                element: <SignIn />,
-                            },
-                            {
                                 path: 'create/:bdId',
                                 element: <Create />,
                             },
                             {
-                                path: 'detail/:bdId',
+                                path: 'detail/:id',
                                 element: <Detail />,
+                            },
+                            {
+                                path: 'signIn',
+                                element: <SignIn />,
                             },
                         ]
                     },
