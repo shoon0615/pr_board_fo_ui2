@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
     Avatar, AvatarGroup, Box, Card, CardContent, Typography, Pagination, Chip,
 } from '@mui/material';
@@ -7,12 +7,12 @@ import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid2';
 import { Tag as TagIcon } from '@mui/icons-material';
 
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
 import { Link, NavLink } from 'react-router-dom';
 
-import { getBoard } from '@/features/board/services/board';
-import { Board as Board2 } from '@/features/board/types/board';
+// import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+// import { getBoards } from '@/features/board/services/board';
+import { Board } from '@/features/board/types/board';
+import { useQueryBoards } from '@/features/board/hooks/board';
 
 import * as Date from '@/shared/utils/dateUtil';
 
@@ -53,7 +53,9 @@ const StyledTypography = styled(Typography)({
     textOverflow: 'ellipsis',
 });
 
-function Author({ author }: { author: string; }) {
+// function Author({ author }: { author: string; }) {
+function Author({ data }: { data: Board; }) {
+    const author = (data.memberName ?? String(data.memberId)) || 'Anonymous';
     return (
         <Box
             sx={{
@@ -80,18 +82,10 @@ function Author({ author }: { author: string; }) {
                 </AvatarGroup>
                 <Typography variant='caption'>{author}</Typography>
             </Box>
-            {/* <Typography variant='caption'>{Date.convertDateFormat(data.createdDate, 'YYYY.MM.DD')}</Typography> */}
+            <Typography variant='caption'>{Date.convertDateFormat(data.createdDate, 'YYYY.MM.DD')}</Typography>
         </Box>
     );
 }
-
-export type Boards = Board[];
-export interface Board {
-    id?: string;
-    crudId?: string;
-    title: string;
-    contents: string;
-};
 
 export default function DataContent() {
     const [focusedCardIndex, setFocusedCardIndex] = useState<
@@ -113,19 +107,29 @@ export default function DataContent() {
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         console.info('You changed pagination.', value);
         setPage(value);
+        // scrollToTop();
     };
+
+    // import { scrollToTop } from '@/shared/utils/basicUtil';
+    const scrollToTop = () => window.scrollTo(0, 0);
 
     const [page, setPage] = useState(1);
 
-    // const foApiUrl = 'http://localhost:3001/api/v1/crud';
-    const foApiUrl = 'http://158.179.167.148:3001/api/v1/crud';
-    const { data, isLoading } = useQuery<Boards>({
-        queryKey: ['boards'],
-        queryFn: async () => (await axios.get<{ data: Boards }>(foApiUrl)).data.data,   // 렌더링 발생
-        // select: (data: any) => data.map((data: any) => ({ ...data, id: data.crud_id }))
-        // select: (data: any) => data.filter((data: any) => data.crud_id === 8)
-    });
+    useEffect(() => {
+        // refetch();
+        scrollToTop();
+    }, [page]);
 
+    // api 호출을 커스텀 훅으로 분리하여 사용??
+    /* const { data: boardData } = useSuspenseQuery({
+        queryKey: ['boardList'],
+        queryFn: () => getBoards(),
+        select: (data: { data: { data: Boards, pagination: any }}) => data?.data,
+    });
+    const { data, pagination } = boardData; */
+    const { data, pagination } = useQueryBoards({ page });
+    const total = pagination?.totalPages || 0;   // TODO: 임시 페이징
+    
     return (
         <>
             <Grid container spacing={2} columns={12}>
@@ -168,8 +172,10 @@ export default function DataContent() {
                                                 component='div'
                                                 sx={{ display: 'flex', gap: 1 }}
                                             >
-                                                <Chip variant="filled" size="small" icon={<TagIcon />} label="hashTag" />
-                                                <Chip variant="outlined" size="small" icon={<TagIcon />} label="hashTag2" />
+                                                {board?.tags?.map((tag, index) => (
+                                                    // <Chip variant="filled" size="small" icon={<TagIcon />} label="hashTag" />
+                                                    <Chip variant="outlined" size="small" icon={<TagIcon />} label={tag} key={index} />
+                                                ))}
                                             </Typography>
                                             <Typography
                                                 gutterBottom
@@ -187,19 +193,20 @@ export default function DataContent() {
                                             </StyledTypography>
                                         </div>
                                     </StyledCardContent>
-                                    <Author author={board.title} />
+                                    <Author data={board} />
                                 </StyledCard>
                             </Link>
                         ))}
                     </Box>
+                    {(data?.length > 0) &&
+                        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, justifyContent: 'center' }}>
+                            {/* <Pagination hidePrevButton hideNextButton count={10} boundaryCount={10} /> */}
+                            <Pagination showFirstButton showLastButton count={+total} page={page} siblingCount={3} boundaryCount={1} onChange={handleChange} />
+                        </Box>
+                    }
                 </Grid>
             </Grid>
-            {(typeof data?.length === 'number' && data?.length > 0) &&
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 4, justifyContent: 'center' }}>
-                {/* <Pagination hidePrevButton hideNextButton count={10} boundaryCount={10} /> */}
-                <Pagination showFirstButton showLastButton count={15} page={page} siblingCount={3} boundaryCount={1} onChange={handleChange} />
-            </Box>
-            }
+            
             {data?.length === 0 && <Box sx={{ alignSelf: 'center', }}><Typography variant='h6'>검색 결과가 없습니다.</Typography></Box>}
         </>
     );

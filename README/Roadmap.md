@@ -22,6 +22,7 @@ https://joong-sunny.github.io/react/react7/
  ┣ 📂features   🥼 파트별 상세 구조
  ┃ ┣ 📂board
  ┃ ┃ ┣ 📂components 🥼 component
+ ┃ ┃ ┣ 📂hooks      🥼 커스텀훅(useQuery)
  ┃ ┃ ┣ 📂services   🥼 api
  ┃ ┃ ┣ 📂types      🥼 type, interface
  ┣ 📂layout     👔 전체 구조

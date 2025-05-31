@@ -6,10 +6,8 @@ import Grid from '@mui/material/Grid2';
 // import { ChevronRightRounded } from '@mui/icons-material';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 
-import { useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useParams, Link } from 'react-router-dom';
-
-import { getBoard } from '@/features/board/services/board';
+import { useQueryBoard } from '@/features/board/hooks/board';
 import { Board } from '@/features/board/types/board';
 
 import * as Data from '@/shared/utils/dataUtil';
@@ -142,6 +140,7 @@ const MainContent = (data: Board) => {
     const getMainContent = () => {
         switch (tabValue) {
             case 1:
+                // return <Main data={data} />;
                 return <Main {...data} />;
             case 2:
                 return <Review />;
@@ -215,25 +214,19 @@ const FooterContent = ({ id }: { id: string }) => {
 };
 
 export default function BoardDetail(props: { disableCustomTheme?: boolean }) {
+    // 커스텀훅 이용?? -> FooterContent 로 인해 임시
     const { id } = useParams();
 
     if (typeof id !== 'string') {
         throw new Error('id가 존재하지 않습니다.');
     }
-    
-    // const { data, isLoading, refetch } = useQuery({
-    const { data } = useSuspenseQuery({
-        // queryKey: ['boardDetail', id],
-        queryKey: ['boardDetail'],
-        queryFn: () => getBoard(id),
-        // enabled: !!id, // id가 있을 때만 실행되도록 (optional)
-    });
-    const boardData = Data.getData(data);
+
+    const data = useQueryBoard();
 
     return (
         <StyledGrid>
-            <HeaderContent {...boardData} />
-            <MainContent {...boardData} />
+            <HeaderContent {...data} />
+            <MainContent {...data} />
             <FooterContent id={id} />
         </StyledGrid>
     );

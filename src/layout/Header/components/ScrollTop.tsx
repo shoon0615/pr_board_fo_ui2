@@ -1,11 +1,8 @@
 import * as React from 'react';
-import Toolbar from '@mui/material/Toolbar';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Fab from '@mui/material/Fab';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import Fade from '@mui/material/Fade';
+import {
+    Toolbar, useScrollTrigger, Box, Container, Fab, Fade, 
+} from '@mui/material';
+import { KeyboardArrowUp as KeyboardArrowUpIcon } from '@mui/icons-material';
 
 interface Props {
     /**

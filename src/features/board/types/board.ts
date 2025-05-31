@@ -11,6 +11,9 @@ export interface Board {
     hits: number;           // 조회수
     memberId?: number;      // 회원 id
     memberName?: string;    // 회원명
+    likes: number;          // 좋아요 수
+    tags?: Array<string>;   // 태그 수
+    reviews: number;        // 댓글 수
     createdDate: string;    // 생성일자 -> ISO 형식 Date 문자열
     modifiedDate?: string;  // 수정일자
     // deleteYn: 'Y' | 'N';
