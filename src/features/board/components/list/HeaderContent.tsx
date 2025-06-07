@@ -1,8 +1,10 @@
 import React from 'react';
 import { 
-    Box, Typography, IconButton,
+    Box, Typography, IconButton, Button, 
 } from '@mui/material';
 import { RssFeedRounded } from '@mui/icons-material';
+
+import { Link } from 'react-router-dom';
 
 import Category from './Category';
 import Search from '@/shared/components/Search';
@@ -28,6 +30,9 @@ export default function HeaderContent() {
                 {/* <IconButton size='small' aria-label='RSS feed'>
                     <RssFeedRounded />
                 </IconButton> */}
+                <Link to={`/board/create`}>
+                    <Button type='button' variant='contained'>Create</Button>
+                </Link>
             </Box>
 
             {/* Web(Desktop) */}
@@ -65,6 +70,10 @@ export default function HeaderContent() {
                     {/* <IconButton size='small' aria-label='RSS feed'>
                         <RssFeedRounded />
                     </IconButton> */}
+                    <Link to={`/board/create`}>
+                        {/* <Box sx={{ display: 'flex', flexDirection: 'row', pb: 4, justifyContent: 'right' }}> */}
+                        <Button type='button' variant='contained'>Create</Button>
+                    </Link>
                 </Box>
             </Box>
         </>

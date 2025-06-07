@@ -3,11 +3,11 @@ import {
     Box, Button, Typography, Tab, Tabs, List, ListItem, ListItemText, Stack,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-// import { ChevronRightRounded } from '@mui/icons-material';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import { ChevronRightRounded as ChevronRightRoundedIcon } from '@mui/icons-material';
 
+import { useParamsId } from '@/shared/hooks/useParams';
 import { useParams, Link } from 'react-router-dom';
-import { useQueryBoard } from '@/features/board/hooks/board';
+import { useQueryBoard, useRemoveBoard } from '@/features/board/hooks/board';
 import { Board } from '@/features/board/types/board';
 
 import * as Data from '@/shared/utils/dataUtil';
@@ -29,7 +29,7 @@ import PaymentForm from '@/features/board/components/detail/PaymentForm';
 
 // TODO: 
 // FIXME: 이름만 styled 사용하고, 실제론 components 반환 -> 추후 sx 대신 styled 적용?? -> ReactNode?? ReactElement??
-const StyledGrid = ({ children }: { children: ReactNode }) => {
+const BoardDetailWrapper = ({ children }: { children: ReactNode }) => {
     return (
         <Grid
             container
@@ -78,7 +78,7 @@ const StyledGrid = ({ children }: { children: ReactNode }) => {
  * const HeaderContent = (data: Board) => { ... }
  */
 /** 게시판 상단 정보 */
-const HeaderContent = (data: Board) => {
+const HeaderContent = ({ data }: { data: Board }) => {
     // console.log('data', data);
     return (
         <>
@@ -134,14 +134,14 @@ const HeaderContent = (data: Board) => {
 
 /** 게시판 메인 정보 */
 // const MainContent = ({ data }: { data?: Board }) => {   // data 의 optional 설정
-const MainContent = (data: Board) => {
+const MainContent = ({ data }: { data: Board }) => {
     const [tabValue, setTabValue] = useState(1);
 
     const getMainContent = () => {
         switch (tabValue) {
             case 1:
-                // return <Main data={data} />;
-                return <Main {...data} />;
+                return <Main data={data} />;
+                // return <Main {...data} />;
             case 2:
                 return <Review />;
             case 3:
@@ -177,6 +177,12 @@ const MainContent = (data: Board) => {
 /** 다음 버튼 */
 const FooterContent = ({ id }: { id: string }) => {
     // const { id } = useParams();
+    const { mutate, error, isPending, isSuccess, isError, } = useRemoveBoard(id);
+    const handleClick = () => {
+        if (window.confirm('정말 삭제하시겠습니까?')) {
+            mutate(id);
+        }
+    }
 
     return (
         <Box
@@ -194,7 +200,7 @@ const FooterContent = ({ id }: { id: string }) => {
                 justifyContent: 'flex-end',
             }}
         >
-            <Link to={`/board/create/${id}`}>
+            <Link to={`/board/edit/${id}`}>
                 <Button
                     variant='contained'
                     // endIcon={<ChevronRightRoundedIcon />}
@@ -209,25 +215,30 @@ const FooterContent = ({ id }: { id: string }) => {
                     Modify
                 </Button>
             </Link>
+            <Button variant='contained' onClick={handleClick}>
+                Delete
+            </Button>
         </Box>
     );
 };
 
 export default function BoardDetail(props: { disableCustomTheme?: boolean }) {
-    // 커스텀훅 이용?? -> FooterContent 로 인해 임시
-    const { id } = useParams();
+    const id = useParamsId();
+    const data = useQueryBoard(id);
 
-    if (typeof id !== 'string') {
-        throw new Error('id가 존재하지 않습니다.');
-    }
-
-    const data = useQueryBoard();
+    /* !data && (   // 추가(return 아님)
+        <div>Loading222</div>
+    ) */
+    /* if (!data) {    // 종료
+        return (<div>Loading222</div>);
+    } */
 
     return (
-        <StyledGrid>
-            <HeaderContent {...data} />
-            <MainContent {...data} />
+        <BoardDetailWrapper>
+            {/* <HeaderContent {...data} /> */}
+            <HeaderContent data={data} />
+            <MainContent data={data} />
             <FooterContent id={id} />
-        </StyledGrid>
+        </BoardDetailWrapper>
     );
 }

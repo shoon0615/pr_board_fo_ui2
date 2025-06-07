@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { 
-    Avatar, AvatarGroup, Box, Card, CardContent, Typography, Pagination, Chip,
+    Avatar, AvatarGroup, Box, Card, CardContent, Typography, Pagination, Chip, 
 } from '@mui/material';
 // import CardMedia from '@mui/material/CardMedia';     // img
 import { styled } from '@mui/material/styles';
@@ -87,7 +87,7 @@ function Author({ data }: { data: Board; }) {
     );
 }
 
-export default function DataContent() {
+export default function MainContent() {
     const [focusedCardIndex, setFocusedCardIndex] = useState<
         number | null
     >(null);
@@ -140,8 +140,14 @@ export default function DataContent() {
                             flexDirection: 'column',
                             gap: 2,
                             height: '100%',
+                            // height: 'auto',
+                            /** 스크롤 가능 */
+                            /* height: 'fit-content',
+                            maxHeight: '100vh',
+                            overflowY: 'auto', */
                         }}
                     >
+                        {/* {data?.map((board: Board, index: number) => ( */}
                         {data?.map((board, index) => (
                             // <Link to={`/board/detail/${index + 1}`} key={index}>
                             <Link to={`/board/detail/${board.crudId}`} key={board.crudId}>

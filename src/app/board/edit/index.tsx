@@ -1,16 +1,20 @@
-import { useEffect } from 'react';
+// import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Box, Typography, Stack, Button, Checkbox,
     FormLabel, FormControl, FormGroup, FormControlLabel, 
 } from '@mui/material';
-import { StyledSignInContainer, StyledCard, StyledAntSwitch, BoardSaveWrapper as BoardCreateWrapper, } from '@/app/board/save/styled';
+import MuiLink from '@mui/material/Link';
+// import * as S from "./styled";   // <S.Card />
+import { StyledSignInContainer, StyledCard, StyledAntSwitch, BoardSaveWrapper as BoardEditWrapper, } from '@/app/board/save/styled';
 
 import z from 'zod';
 import { Form, FormInput, FormTextArea, FormComboBox, } from '@/shared/components/Form2';
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAddBoard } from "@/features/board/hooks/board";
+import { useParamsId, useParamsIdOrElse } from '@/shared/hooks/useParams';
+import { useQueryBoard, useEditBoard } from "@/features/board/hooks/board";
 
 export default function BoardCreate(props: { disableCustomTheme?: boolean }) {
     // import { Board } from '@/features/board/types/board';
@@ -23,53 +27,52 @@ export default function BoardCreate(props: { disableCustomTheme?: boolean }) {
         )
         .min(1, { message: '최소 1개 이상의 태그를 선택해야 합니다.' }),    // data 에 아예 컬럼 자체가 없으면 안탐(isDirty 후 반응)
     });
-    type SchemaType = z.infer<typeof schema>;
 
-    /* const defaultValues: SchemaType = {
+    const defaultValues = {
         title: '',
         contents: '',
-        // tags: [] as string[],
-        tags: [],
+        tags: [] as string[],
+        // tags: [],
     }
-
-    // const basicValues: SchemaType = defaultValues ?? {};
-    // const basicValues = { ...defaultValues };
-
-    const convertDefaultValues = Object.fromEntries(
-        Object.entries(basicValues)
-            .map(([key, value]) => [key, typeof value === 'string' ? '' : Array.isArray(value) ? [] : value])
-    ); */
-
-    const basicValues: SchemaType = {
-        title: '',
-        contents: '',
-        tags: [],
-    }
-
-    const convertDefaultValues = <T extends Record<string, any>>(obj: T): T => Object.fromEntries(
-        Object.entries(basicValues)
-            .map(([key, value]) => [key, typeof value === 'string' ? '' : Array.isArray(value) ? [] : value])
-    ) as T;
-    const defaultValues: SchemaType = convertDefaultValues(basicValues);
 
     /** useForm() */
-    // const methods = useForm<SchemaType>({ defaultValues, resolver: zodResolver(schema) });
     const methods = useForm({ defaultValues, resolver: zodResolver(schema) });
 
     /** useMutation() */
-    const { mutate, error, isPending, isSuccess, isError, } = useAddBoard();
+    /* const { id } = useParams();
+    if (typeof id !== 'string') {
+        throw new Error('id가 존재하지 않습니다.');
+    } */
+    const id = useParamsId();
+    // const submit = useEditBoard();
+    const { mutate, error, isPending, isSuccess, isError, } = useEditBoard(id);
 
-    /** [Create] 최초 접속 시 -> Form 초기화(defaultValues 만 처리 금지!!) */
+    /** [Edit] 최초 접속 시 -> Form 초기화(useQuery -> then(onSuccess) -> form.reset(data)) */
+    const board = useQueryBoard(id);
+    const [data, setData] = useState(board);
+    // const data = useRef(board);     // ref.current
     useEffect(() => {
-        methods.reset(basicValues);
-    }, []);
+        if (data) {
+            const convertData = Object.fromEntries(
+                Object.entries(data)
+                    .map(([key, value]) => [key, value ?? ''])
+            );
+            methods.reset(convertData);
+        }
+    // }, [board]);
+    }, [data]);
 
-    /** Submit 시 -> Form 초기화 */
+    /** Submit 시 -> Form 초기화(onSubmit 에 금지!!) */
+    /* useEffect(() => {
+        methods.formState.isSubmitSuccessful && methods.reset();
+        // methods.formState.isSubmitSuccessful && methods.reset(defaultValues);
+    }, [methods.formState.isSubmitSuccessful]); */
     useEffect(() => {
         isSuccess && methods.reset(methods.getValues());
     }, [isSuccess]);
 
     /** Form 전송 -> Submit */
+    type SchemaType = z.infer<typeof schema>;
     const onSubmit = (data: SchemaType) => {
         // console.log('data', data);
         // const convertValues = (data: SchemaType) => Object.fromEntries(
@@ -79,7 +82,10 @@ export default function BoardCreate(props: { disableCustomTheme?: boolean }) {
                 .map(([key, value]) => [key, value === '' ? null : value])
         );
         console.log('data', convertValues);
+
         mutate(convertValues);
+        // methods.setValue();
+        // isSuccess && methods.reset(convertValues);  // [X] await 처럼 mutate 완료 후 진행 -> onSuccess 에 필요
     };
 
     /** Form Data 확인용 */
@@ -91,7 +97,7 @@ export default function BoardCreate(props: { disableCustomTheme?: boolean }) {
         // .map((item, index) => ({ test: item, id: index + 1 }));
     
     return (
-        <BoardCreateWrapper>
+        <BoardEditWrapper>
             <Form
                 onSubmit={onSubmit}
                 form={methods}
@@ -101,7 +107,7 @@ export default function BoardCreate(props: { disableCustomTheme?: boolean }) {
             >
                 <FormInput name='title' defaultName='제목' />
                 <FormTextArea name='contents' defaultName='내용' />
-                <FormComboBox name='tags' defaultName='태그' options={category} />
+                <FormComboBox name='tags' defaultName='태그' options={category} disabled />
                 {/* <FormControl component="fieldset">
                     <FormGroup row>
                         <FormControlLabel control={<Switch defaultChecked />} label="공개 여부" color="default" required />
@@ -178,22 +184,33 @@ export default function BoardCreate(props: { disableCustomTheme?: boolean }) {
                         justifyContent: 'flex-end',
                     }}
                 >
-                    <Button
-                        type='submit'
-                        variant='contained'
-                        sx={{
-                            width: {
-                                xs: '100%',
-                                sm: 'fit-content',
-                            },
-                        }}
-                    >
-                        Save
-                    </Button>
+                    {/* <MuiLink
+                        component='button'
+                        type='button'
+                        onClick={handleClickOpen}
+                        variant='body2'
+                        sx={{ alignSelf: 'center' }}
+                    >Modal</MuiLink> */}
+                    {/* <Link to={`/board/list`}> */}
+                        <Button
+                            type='submit'
+                            variant='contained'
+                            sx={{
+                                width: {
+                                    xs: '100%',
+                                    sm: 'fit-content',
+                                },
+                            }}
+                        >
+                            {/* {autoMode === 'create' ? 'Create' : 'Edit'} */}
+                            Save
+                        </Button>
+                    {/* </Link> */}
+                    {/* <Button type='button' variant='contained' onClick={() => { console.log('formData', methods.getValues()); }}>Check</Button> */}
                     <Button type='button' variant='contained' onClick={onClick}>Check</Button>
                     <Button type='button' variant='contained' onClick={() => methods.reset()}>Reset</Button>
                 </Box>
             </Form>
-        </BoardCreateWrapper>
+        </BoardEditWrapper>
     );
 }

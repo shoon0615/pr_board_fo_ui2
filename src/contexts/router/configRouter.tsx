@@ -9,7 +9,11 @@ const MainGrid = lazy(() => import('@/pages/dashboard/components/MainGrid'));
 
 // const List = lazy(() => import('@/pages/board'));
 const List = lazy(() => import('@/app/board/list'));
+
+// const Save = lazy(() => import('@/app/board/save'));
 const Create = lazy(() => import('@/app/board/create'));
+const Edit = lazy(() => import('@/app/board/edit'));
+
 const Detail = lazy(() => import('@/app/board/detail'));
 const SignIn = lazy(() => import('@/app/member/sign-in'));
 
@@ -41,8 +45,12 @@ const router = createBrowserRouter([
                                 element: <List />,
                             },
                             {
-                                path: 'create/:bdId',
+                                path: 'create',
                                 element: <Create />,
+                            },
+                            {
+                                path: 'edit/:id',
+                                element: <Edit />,
                             },
                             {
                                 path: 'detail/:id',

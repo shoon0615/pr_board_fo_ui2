@@ -1,9 +1,11 @@
+import { BaseType } from '@/shared/types';
 // 실무에서 일반적으로 모든 변수에 주석은 가독성 및 효율성이 떨어져 미사용 지양
 // 꼭 필요한 경우에만 작성 또는 명시적 태그를 붙이고, 변수 자체를 명칭으로 바로 알 수 있도록 작성
 
 /** 게시판 응답 객체 */
 export type Boards = Board[];
-export interface Board {
+// export type Board = BaseType & {};       // type 은 병합 불가
+export interface Board extends BaseType {   // interface 는 병합 가능
     crudId?: number;             // id
     id?: number;             /** id */
     title: string;          /** 제목 */

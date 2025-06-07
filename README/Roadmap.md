@@ -7,6 +7,9 @@
 > ESLint + Prettier 설정을 통해 일관된 포맷 유지 가능
 <br />
 
+![img/img_3.png](img/img_3.png)
+<br />
+
 ---
 
 ## 참조

@@ -8,14 +8,11 @@ import { ThumbUp, ThumbDown } from '@mui/icons-material';
 // import { Board } from '../../types/board';
 import { Board } from '@/features/board/types/board';
 
-// export default function Main({ data }: { data: Board }) {
-export default function Main(data: Board) {
+export default function Main({ data }: { data: Board }) {
+// export default function Main(data: Board) {
     // const [upCount, setUpCount] = React.useState(98);
     const [upCount, setUpCount] = React.useState(data.hits);
     const [downCount, setDownCount] = React.useState(0);
-
-    console.log('data', data.hits);
-    console.log('upCount', upCount);
 
     const handleUpClick = () => {
         // setUpCount(Math.max(upCount - 1, 0));    // 0 이하로 안 내려감
